@@ -3,13 +3,13 @@ import './App.css';
 import FirstComponent from './components/learning-practise/FirstComponent';
 import SecondComponent from './components/learning-practise/SecondComponent';
 import ThirdComponent from './components/learning-practise/ThirdComponent';
-import Counter from './components/counter/Counter';
+import TodoApp from './components/todo/TodoApp';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Counter></Counter>
+        <TodoApp></TodoApp>
       </div>
     );
   }
