@@ -1,12 +1,34 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class TodoApp extends Component {
     render() {
         return (
             <div className="todoApp">
-                <LoginComponent></LoginComponent>
+                <Router>
+                    <>
+                        <Switch>
+                            <Route path="/" exact component={LoginComponent} />
+                            <Route path="/login" component={LoginComponent} />
+                            <Route path="/welcome" component={WelcomeComponent} />
+                            <Route component={ErrorComponent} />
+                        </Switch>
+                    </>
+                </Router>
             </div>
         );
+    }
+}
+
+class WelcomeComponent extends Component {
+    render() {
+        return <div>Welcome to in28Minutes</div>
+    }
+}
+
+class ErrorComponent extends Component {
+    render() {
+        return <div>An Error Occured. I don't know what to do. Please contanct abcd-efgh-ijhj</div>
     }
 }
 
@@ -24,7 +46,6 @@ class LoginComponent extends Component {
     }
 
     handleChange(event) {
-        console.log(this.state);
         this.setState(
             {
                 [event.target.name]: event.target.value
@@ -33,11 +54,10 @@ class LoginComponent extends Component {
     }
     loginClicked() {
         if (this.state.username === 'in28minutes' && this.state.password === 'dummy') {
-            console.log("Successful");
+            this.props.history.push("/welcome");
             this.setState({ hasLoginFailed: false });
             this.setState({ showSuccessMessage: true });
         } else {
-            console.log("Invalid Credentials");
             this.setState({ hasLoginFailed: true });
             this.setState({ showSuccessMessage: false });
         }
@@ -46,8 +66,8 @@ class LoginComponent extends Component {
     render() {
         return (
             <div className="login">
-                <ShowSuccessMessage showSuccessMessage={this.state.showSuccessMessage}></ShowSuccessMessage>
-                <ShowInvalidCredentails hasLoginFailed={this.state.hasLoginFailed}></ShowInvalidCredentails>
+                {(this.state.showSuccessMessage && <div> Login Successfull</div>)}
+                {(this.state.hasLoginFailed && <div>Invalid Credentials</div>)}
                 User Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}></input>
                 Password: <input type="password" name="password" value={this.state.password} onChange={this.handleChange}></input>
                 <button onClick={this.loginClicked}>Login</button>
@@ -55,19 +75,4 @@ class LoginComponent extends Component {
         );
     }
 }
-
-function ShowInvalidCredentails(props) {
-    if (props.hasLoginFailed) {
-        return <div>Invalid Credentials</div>;
-    }
-    return null;
-}
-
-function ShowSuccessMessage(props) {
-    if (props.showSuccessMessage) {
-        return <div>Successfull</div>
-    }
-    return null;
-}
-
 export default TodoApp;
